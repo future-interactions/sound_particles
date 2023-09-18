@@ -6,6 +6,7 @@ function setup() {
 
   mic = new p5.AudioIn();
   mic.start();
+  //getAudioContext().resume();
   fft = new p5.FFT();
   fft.setInput(mic);
 strokeWeight(2);
@@ -21,7 +22,7 @@ rect(0,0,displayWidth,displayHeight);
  // beginShape();
   for (i = 0; i < spectrum.length; i++) {
 	if(spectrum[i]>0){
-		stroke(175-spectrum[i]);
+		stroke(200-spectrum[i]);
     //stroke(255);
 	}else{
 		stroke(0);
@@ -33,4 +34,7 @@ rect(0,0,displayWidth,displayHeight);
    // vertex(i, map(spectrum[i], 0, 255, height/2, 0));
   }
  // endShape();
+}
+function touchStarted() {
+  getAudioContext().resume();
 }
