@@ -1,7 +1,7 @@
 let mic, fft;
 
 function setup() {
-  createCanvas(displayWidth, displayHeight);
+  createCanvas(displayWidth, displayHeight, WEBGL);
   noFill();
 
   mic = new p5.AudioIn();
@@ -9,31 +9,31 @@ function setup() {
   //getAudioContext().resume();
   fft = new p5.FFT();
   fft.setInput(mic);
-strokeWeight(2);
-//background(0);
+  strokeWeight(0.9);
+  //rectMode(CENTER);
+  //background(0);
 }
 
 function draw() {
-	noStroke();
-	fill(0);
-rect(0,0,displayWidth,displayHeight);
+  orbitControl();
+
+  noStroke();
+  background(0);
   let spectrum = fft.analyze();
-
- // beginShape();
-  for (i = 0; i < spectrum.length; i++) {
-	if(spectrum[i]>0){
-		stroke(200-spectrum[i]);
-    //stroke(255);
-	}else{
-		stroke(0);
-	}
-	let x = displayWidth/spectrum.length*i-100;
-	point(x*1.5,map(spectrum[i], 0, 255, height/2, 0));
-	point(x*1.5,map(spectrum[i]*-1, 0, 255, height/2, 0));
-
-   // vertex(i, map(spectrum[i], 0, 255, height/2, 0));
+  for (j = 0; j < 360; j+=60) {
+    rotateX(radians(j));
+    for (i = 0; i < spectrum.length; i++) {
+      if (spectrum[i] > 0) {
+        stroke(150 - spectrum[i]);
+        // stroke(255);
+      } else {
+        stroke(0);
+      }
+      let x = displayWidth / spectrum.length * i;
+      point(-width / 2 + x * 1.2, -spectrum[i]);
+      point(-width / 2 + x * 1.2, spectrum[i]);
+    }
   }
- // endShape();
 }
 function touchStarted() {
   getAudioContext().resume();
